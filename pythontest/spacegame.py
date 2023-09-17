@@ -18,6 +18,10 @@ myship=ship(game_world)
 myship.set_size(15)
 myship.set_position(pyg.Vector2(screen_size[0]*0.5,screen_size[1]*0.5))
 
+enemy=ship(game_world)
+enemy.set_size(15)
+enemy.set_position(pyg.Vector2(screen_size[0]*0.2,screen_size[1]*0.5))
+
 quit=False
 
 frame_time=pyg.time.get_ticks()
