@@ -17,9 +17,7 @@ class bullet(world_object):
     def update_object(self,dt):
         surface=self.world.surface
         size=surface.get_size()
-        if self.position.x>size[0] or self.position.x<0:
-            self.world.delete_object(self)
-        if self.position.y>size[1] or self.position.y<0:
+        if self.position.x>size[0] or self.position.x<0 or self.position.y>size[1] or self.position.y<0:
             self.world.delete_object(self)
     def draw(self):
         surface=self.world.surface

@@ -2,6 +2,7 @@ import pygame as pyg
 from ship import *
 from world import *
 from bullet import *
+from ship_controller import *
 import math
 
 screen_size=[1024,512]
@@ -14,46 +15,40 @@ surface=pyg.display.get_surface()
 
 game_world=world(surface)
 
-myship=ship(game_world)
-myship.set_size(15)
-myship.set_position(pyg.Vector2(screen_size[0]*0.5,screen_size[1]*0.5))
+player_ship=ship(game_world)
+player_ship.set_size(15)
+player_ship.set_position(pyg.Vector2(screen_size[0]*0.5,screen_size[1]*0.5))
+player_ship_controller=ship_controller(player_ship)
 
-enemy=ship(game_world)
-enemy.set_size(15)
-enemy.set_position(pyg.Vector2(screen_size[0]*0.2,screen_size[1]*0.5))
+enemy_ship=ship(game_world)
+enemy_ship.set_size(15)
+enemy_ship.set_position(pyg.Vector2(screen_size[0]*0.2,screen_size[1]*0.5))
+enemy_ship_controller=ship_controller(enemy_ship)
+
+def kill_player():
+    
+
 
 quit=False
 
 frame_time=pyg.time.get_ticks()
 
-W_PRESSED=False
-D_PRESSED=False
-A_PRESSED=False
-
-FORWARD_ACCElERATION=100
-ANGULAR_ACCELERATION=math.radians(360)
-
 while not quit:
     for event in pyg.event.get():
         if event.type==pyg.QUIT:
             quit=True
-        if event.type==pyg.KEYDOWN or event.type==pyg.KEYUP:
-            if event.key==pyg.K_w:W_PRESSED=not W_PRESSED
-            if event.key==pyg.K_d:D_PRESSED=not D_PRESSED
-            if event.key==pyg.K_a:A_PRESSED=not A_PRESSED
-            if event.key==pyg.K_SPACE:
-                myship.fire_bullet()
-    if W_PRESSED:
-        myship.set_acceleration(myship.get_direction()*FORWARD_ACCElERATION)
-    else:
-        myship.set_acceleration(pyg.Vector2(0,0))
-    if D_PRESSED:
-        myship.set_angular_acceleration(ANGULAR_ACCELERATION)
-    elif A_PRESSED:
-        myship.set_angular_acceleration(-ANGULAR_ACCELERATION)
-    else:
-        myship.set_angular_acceleration(0)
-        
+        if event.type==pyg.KEYDOWN:
+            if event.key==pyg.K_SPACE:player_ship_controller.add_action("shoot")
+    keys=pyg.key.get_pressed()
+    if keys[pyg.K_w]:player_ship_controller.add_action("move_forward")
+    if keys[pyg.K_d]:player_ship_controller.add_action("turn_right")
+    if keys[pyg.K_a]:player_ship_controller.add_action("turn_left")
+            
+    kill_player()      
+            
+    player_ship_controller.update()
+    enemy_ship_controller.update()
+    
     new_frame_time=pyg.time.get_ticks()
     game_world.update((new_frame_time-frame_time)/1000)
     frame_time=new_frame_time
