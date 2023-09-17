@@ -1,15 +1,19 @@
-from world_object import *
+from world_object import world_object
+from bullet import bullet
 import pygame as pyg
 import pygame.gfxdraw
 import math
 
 class ship(world_object):
-    def __init__(self,size):
-        world_object.__init__(self)
+    def set_size(self,size):
         self.collider.set_size([size*2,size*2])
-        self.size=size
+        self.size=size        
     def update_override(self,dt):
        pass
+    def fire_bullet(self):
+        world=self.world
+        ship_bullet=bullet(world)
+        ship_bullet.fire(self.position,self.get_direction())
     def draw(self,surface):
         p1=self.position+pyg.Vector2(math.cos(math.radians(0)+self.rotation)*self.size,math.sin(math.radians(0)+self.rotation)*self.size)
         p2=self.position+pyg.Vector2(math.cos(math.radians(120)+self.rotation)*self.size,math.sin(math.radians(120)+self.rotation)*self.size)

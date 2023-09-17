@@ -12,12 +12,11 @@ pyg.display.set_caption("Window")
 
 surface=pyg.display.get_surface()
 
-world_list=world(surface)
+game_world=world(surface)
 
-myship=ship(25)
+myship=ship(game_world)
+myship.set_size(15)
 myship.set_position(pyg.Vector2(screen_size[0]*0.5,screen_size[1]*0.5))
-
-world_list.add_object(myship)
 
 quit=False
 
@@ -39,8 +38,7 @@ while not quit:
             if event.key==pyg.K_d:D_PRESSED=not D_PRESSED
             if event.key==pyg.K_a:A_PRESSED=not A_PRESSED
             if event.key==pyg.K_SPACE:
-                world_list.add_object(bullet(myship.position,myship.get_direction()))
-    
+                myship.fire_bullet()
     if W_PRESSED:
         myship.set_acceleration(myship.get_direction()*FORWARD_ACCElERATION)
     else:
@@ -53,7 +51,7 @@ while not quit:
         myship.set_angular_acceleration(0)
         
     new_frame_time=pyg.time.get_ticks()
-    world_list.update((new_frame_time-frame_time)/1000)
+    game_world.update((new_frame_time-frame_time)/1000)
     frame_time=new_frame_time
     pyg.display.flip()
     surface.fill(pyg.Color(0,0,0))

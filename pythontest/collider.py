@@ -10,7 +10,7 @@ class collider:
         self.width=size[0]
         self.height=size[1]
     def check_collision(self,other):
-        return self.rect.colliderect(other)
+        return self.rect.colliderect(other.rect)
     def calculate_rect(self,position):
         self.rect=pyg.Rect(position.x-self.width*0.5,position.y-self.height*0.5,self.width,self.height)
     def set_position(self,p):
